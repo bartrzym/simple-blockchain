@@ -16,12 +16,14 @@ public class Transaction {
     public byte[] signature;
     public ArrayList<TransactionInput> inputs;
     public ArrayList<TransactionOutput> outputs = new ArrayList<>();
+    private static int transactionNumber = 0;
 
     public Transaction(PublicKey from, PublicKey to, float value, ArrayList<TransactionInput> inputs) {
         this.sender = from;
         this.receiver = to;
         this.value = value;
         this.inputs = inputs;
+        transactionNumber++;
     }
 
     public Transaction() {
@@ -29,7 +31,8 @@ public class Transaction {
 
     private String calculateHash() {
         return StringUtil.applySha256(
-                StringUtil.getStringFromKey(sender) +
+                transactionNumber +
+                        StringUtil.getStringFromKey(sender) +
                         StringUtil.getStringFromKey(receiver) +
                         value
         );
